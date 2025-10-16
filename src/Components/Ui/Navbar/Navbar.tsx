@@ -1,11 +1,9 @@
 import  { useState } from "react";
 import { Link } from "react-router-dom";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-
 import { NavbarLinks } from "./NavbarLinks";
 import { MobileMenu } from "./MobileMenu";
 import { SearchBar } from "./SearchBar";
-import CategoriesBar from "../../CategoriesBar/CategoriesBar";
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,7 +34,6 @@ export const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && <MobileMenu />}
-       <CategoriesBar />
     </nav>
   );
 };
