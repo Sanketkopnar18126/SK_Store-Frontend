@@ -9,7 +9,7 @@ type Props = {
 
 export const SearchBar: React.FC<Props> = ({ value = "", onChange, placeholder = "Search products..." }) => {
   return (
-    <div className="relative">
+    <div className="relative min-w-0"> 
       <input
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
@@ -20,7 +20,7 @@ export const SearchBar: React.FC<Props> = ({ value = "", onChange, placeholder =
           bg-white/20 backdrop-blur-sm text-white placeholder-white/70
           border border-white/10
           focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-yellow-300
-          w-64 transition-all duration-200
+          w-full max-w-[220px] sm:max-w-[260px] transition-all duration-200
           hover:bg-white/25
         "
         aria-label="Search products"

@@ -14,7 +14,6 @@ export const CategoriesBar: React.FC<Props> = ({
 }) => {
   const location = useLocation();
 
-  // get active category slug from URL
   const activeSlug = (() => {
     const match = location.pathname.match(/^\/category\/([^/]+)/);
     return match ? match[1] : null;
@@ -26,22 +25,24 @@ export const CategoriesBar: React.FC<Props> = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative py-3">
-          {/* left/right fades only on md+ */}
           <div className="pointer-events-none hidden md:block absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-pink-50 to-transparent" />
           <div className="pointer-events-none hidden md:block absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-pink-50 to-transparent" />
-
           <div
             className={`
               flex gap-3 items-center py-1 px-2
-              flex-wrap md:flex-nowrap
-              overflow-visible md:overflow-x-auto
+              flex-nowrap
+              overflow-x-auto hide-scrollbar
+              -mx-2 
             `}
           >
-            {/* 'All' pill */}
             <Link
               to="/shop"
               className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300
-                ${!activeSlug ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md scale-105" : "bg-white text-gray-800 hover:bg-rose-100"}
+                ${
+                  !activeSlug
+                    ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md scale-105"
+                    : "bg-white text-gray-800 hover:bg-rose-100"
+                }
               `}
               aria-current={!activeSlug ? "true" : undefined}
             >
@@ -55,7 +56,11 @@ export const CategoriesBar: React.FC<Props> = ({
                   key={c.id}
                   to={`/category/${c.slug}`}
                   className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300
-                    ${active ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md scale-105" : "bg-white text-gray-800 hover:bg-pink-100"}
+                    ${
+                      active
+                        ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md scale-105"
+                        : "bg-white text-gray-800 hover:bg-pink-100"
+                    }
                   `}
                   aria-current={active ? "true" : undefined}
                 >
