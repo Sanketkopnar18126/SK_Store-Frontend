@@ -3,6 +3,8 @@ import MainLayout from "./Components/Layout/MainLayout";
 import Home from "./Pages/Home/Home";
 import { LoginPage } from "./Components/Auth/Login/LoginPage";
 import { LogoutPage } from "./Components/Auth/Logout/LogoutPage";
+import { Products } from "./Pages/Admin/Products";
+import { AddProduct } from "./Pages/Admin/AddProduct";
 
 export const App=()=> {
   return (
@@ -11,6 +13,8 @@ export const App=()=> {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/admin/products" element={<Products />} />
+        <Route path="/admin/add-product" element={<AddProduct />} />
       </Route>
     </Routes>
   )
