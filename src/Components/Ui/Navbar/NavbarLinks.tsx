@@ -10,6 +10,8 @@ export const NavbarLinks: React.FC<Props> = ({ cartCount = 0 }) => {
     { name: "Collections", path: "/collections" },
     { name: "About", path: "/about" },
     { name: "Account", path: "/account" },
+    { name: "Admin", path: "/admin/products" },
+
   ];
 
   return (
