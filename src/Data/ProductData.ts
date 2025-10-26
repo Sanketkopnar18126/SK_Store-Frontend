@@ -8,6 +8,7 @@ export type Product = {
   description: string;
   inStock: boolean;
   discount: number,
+  
 };
 
 export const products: Product[] = [

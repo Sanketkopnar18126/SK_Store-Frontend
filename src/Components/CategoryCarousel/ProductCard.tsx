@@ -1,70 +1,65 @@
-import React, { memo } from "react";
-import { Card, CardContent, CardFooter } from "../Ui/card";
-import { Badge } from "../Ui/badge";
-import { Button } from "../Ui/button";
-import type { Product } from "../../Data/ProductData";
+import React from "react";
+import {
+  ShoppingCartIcon,
+} from "@heroicons/react/24/outline";
 
-type Props = { product: Product };
+type Props = {
+  product: {
+    name: string;
+    imageUrl?: string;
+    price: number;
+    discount?: number;
+  };
+};
 
-const ProductCard: React.FC<Props> = memo(({ product }) => {
+const ProductCard: React.FC<Props> = ({ product }) => {
   return (
-    <Card className="relative flex flex-col overflow-hidden border border-gray-200 rounded-2xl hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-t-2xl">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-          loading="lazy"
-        />
-        {!product.inStock && (
-          <Badge className="absolute top-3 left-3 bg-red-600 text-white">
-            Out of stock
-          </Badge>
-        )}
-        {product.discount && (
-          <Badge className="absolute top-3 right-3 bg-green-500 text-white">
-            {Math.round((product.discount / product.price) * 100)}% OFF
-          </Badge>
-        )}
-      </div>
-      <CardContent className="flex-1 p-4 flex flex-col">
-        <h4 className="text-sm font-semibold text-gray-900 truncate">
-          {product.name}
-        </h4>
-        <p className="mt-1 text-xs text-gray-500 line-clamp-2">
-          {product.description}
-        </p>
-      </CardContent>
-      <CardFooter className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div className="flex flex-col">
-          {product.discount ? (
-            <div className="flex items-center gap-2">
-              <span className="line-through text-gray-400 text-sm">
-                ₹{product.price}
-              </span>
-              <span className="text-indigo-600 font-bold text-lg">
-                ₹{product.price - product.discount}
-              </span>
-            </div>
-          ) : (
-            <span className="text-indigo-600 font-bold text-lg">
-              ₹{product.price}
-            </span>
-          )}
-          <span className="text-xs text-gray-400">Inclusive of taxes</span>
-        </div>
-        <Button
-          size="sm"
-          disabled={!product.inStock}
-          className="px-4 py-2 rounded-full hover:bg-indigo-700 transition-colors"
-        >
-          {product.inStock ? "Add to Cart" : "Out of Stock"}
-        </Button>
-      </CardFooter>
-    </Card>
-  );
-});
+    <div className="bg-white dark:bg-gray-100 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden w-72">
+      {/* Discount Badge */}
+      {product.discount && (
+        <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded">
+          {product.discount}% OFF
+        </span>
+      )}
 
-ProductCard.displayName = "ProductCard";
+      {/* Image */}
+      <div className="h-52 w-full flex items-center justify-center bg-gray-200">
+        <img
+          // src={product.image}
+          alt={product.name}
+          className="h-full object-contain"
+        />
+      </div>
+
+      {/* Action Icons */}
+      {/* <div className="absolute top-3 right-3 flex gap-2">
+        <button className="p-1 rounded-full bg-white hover:bg-gray-100 shadow transition">
+          <EyeIcon className="h-4 w-4 text-gray-700" />
+        </button>
+        <button className="p-1 rounded-full bg-white hover:bg-gray-100 shadow transition">
+          <HeartIcon className="h-4 w-4 text-gray-700" />
+        </button>
+      </div> */}
+
+      {/* Content */}
+      <div className="p-4 flex flex-col gap-2">
+        <h3 className="text-gray-900 font-semibold text-sm md:text-base line-clamp-2">
+          {product.name}
+        </h3>
+
+        {/* Price + Add to Cart */}
+        <div className="mt-2 flex items-center justify-between">
+          <span className="text-gray-900 font-bold text-lg">
+            ${product.price}
+          </span>
+          <button className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1.5 rounded transition">
+            <ShoppingCartIcon className="h-4 w-4" />
+            Add to cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ProductCard;

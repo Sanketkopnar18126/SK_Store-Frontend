@@ -1,6 +1,6 @@
-import type { ProductFormValues } from "../../types";
+import type { ProductFormValues } from "./ProductForm/types";
 import { AdminLayout } from "./AdminLayout";
-import { ProductForm } from "./ProductForm";
+import ProductForm from "./ProductForm/ProductForm";
 
 
 const mockProduct: ProductFormValues = {
@@ -9,17 +9,14 @@ const mockProduct: ProductFormValues = {
   stock: 10,
   description: "High performance laptop",
   category: "Electronics",
-  image: undefined,
+  imageUrls: undefined,
 };
 
 export const EditProduct = () => {
-  const handleEditProduct = (data: ProductFormValues) => {
-    console.log("Edit Product:", data);
-  };
 
   return (
     <AdminLayout>
-      <ProductForm defaultValues={mockProduct} onSubmit={handleEditProduct} submitLabel="Update Product" />
+      <ProductForm defaultValues={mockProduct} submitLabel="Update Product" />
     </AdminLayout>
   );
 };
