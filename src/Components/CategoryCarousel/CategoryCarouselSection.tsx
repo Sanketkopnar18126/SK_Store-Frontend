@@ -1,5 +1,6 @@
 import React from "react";
-import { products  } from "../../Data/ProductData";
+import {  Typography } from "@mui/material";
+import { products } from "../../Data/ProductData";
 import { ProductCarousel } from "./ProductCarousel";
 
 export const CategoryCarouselSection: React.FC = () => {
@@ -9,10 +10,11 @@ export const CategoryCarouselSection: React.FC = () => {
     <div className="space-y-10">
       {categories.map((category) => {
         const categoryProducts = products.filter((p) => p.category === category);
-
         return (
           <div key={category}>
-            <h2 className="text-2xl font-bold mb-4 capitalize">{category}</h2>
+            <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ textTransform: "capitalize" }}>
+              {category}
+            </Typography>
             <ProductCarousel products={categoryProducts} />
           </div>
         );
