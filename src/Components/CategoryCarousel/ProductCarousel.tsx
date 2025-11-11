@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import ProductCard from "./ProductCard";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import type { Product } from "../../Data/ProductData";
+import type { ProductResponse } from "../../API/Admin_API/adminProductApi";
 
-type Props = { products: Product[] };
+type Props = {
+  products: ProductResponse[];
+};
 
 export const ProductCarousel: React.FC<Props> = ({ products }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -14,36 +16,38 @@ export const ProductCarousel: React.FC<Props> = ({ products }) => {
 
   const scrollPrev = () => emblaApi?.scrollPrev();
   const scrollNext = () => emblaApi?.scrollNext();
-
+  useEffect(() => {
+    if (!emblaApi) return;
+    emblaApi.reInit();
+  }, [emblaApi, products.length]);
   return (
-<div className="relative">
-  {/* Carousel Container */}
-  <div ref={emblaRef} className="overflow-hidden">
-    <div className="flex gap-4 px-2">
-      {products.map((product) => (
-        <div key={product.id} className="flex-none w-72">
-          <ProductCard product={product} />
+    <div className="relative">
+      {/* Carousel Container */}
+      <div ref={emblaRef} className="overflow-hidden">
+        <div className="flex gap-4 px-2">
+          {products.map((product) => (
+            <div key={product.id} className="flex-none w-72">
+              <ProductCard product={product} />
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+
+      {/* Left Arrow */}
+      <button
+        onClick={scrollPrev}
+        className="absolute top-1/2 left-0 -translate-y-1/2 p-2 bg-white shadow rounded-full hover:bg-gray-100 z-10"
+      >
+        <ArrowBackIos className="h-5 w-5 text-gray-700" />
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={scrollNext}
+        className="absolute top-1/2 right-0 -translate-y-1/2 p-2 bg-white shadow rounded-full hover:bg-gray-100 z-10"
+      >
+        <ArrowForwardIos className="h-5 w-5 text-gray-700" />
+      </button>
     </div>
-  </div>
-
-  {/* Left Arrow */}
-  <button
-    onClick={scrollPrev}
-    className="absolute top-1/2 left-0 -translate-y-1/2 p-2 bg-white shadow rounded-full hover:bg-gray-100 z-10"
-  >
-    <ArrowBackIos className="h-5 w-5 text-gray-700" />
-  </button>
-
-  {/* Right Arrow */}
-  <button
-    onClick={scrollNext}
-    className="absolute top-1/2 right-0 -translate-y-1/2 p-2 bg-white shadow rounded-full hover:bg-gray-100 z-10"
-  >
-    <ArrowForwardIos className="h-5 w-5 text-gray-700" />
-  </button>
-</div>
-
   );
 };

@@ -7,7 +7,7 @@ interface ProductState {
   saving: boolean;
   loading: boolean; 
   uploadedUrls: string[];
-  products: ProductFormValues[];
+  products: Record<string, ProductResponse[]>;
   error?: string;
 }
 
@@ -16,19 +16,20 @@ const initialState: ProductState = {
   saving: false,
   loading:false,
   uploadedUrls: [],
-  products: [],
+  products: {},
 };
 
 // --- Thunks ---
 
 // Get All Product
 
-export const getAllProducts = createAsyncThunk<ProductResponse[]>(
+export const getAllProducts = createAsyncThunk<Record<string, ProductResponse[]>>(
   "products/getAll",
   async (_, { rejectWithValue }) => {
     try {
       const res = await adminProductApi.getAll();
-      return res.data;
+      //  return res.data as Record<string, ProductResponse[]>;
+      return res.data
     } catch (err: any) {
       return rejectWithValue(err?.response?.data?.message ?? err.message ?? "Failed to fetch products");
     }
@@ -42,7 +43,6 @@ export const createProduct = createAsyncThunk(
   async (product: ProductFormValues, { rejectWithValue }) => {
     try {
       const res = await adminProductApi.create(product);
-      debugger
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.message);
@@ -85,23 +85,22 @@ export const productSlice = createSlice({
       state.loading = true;
       state.error = undefined;
     })
-    .addCase(getAllProducts.fulfilled, (state, action: PayloadAction<ProductResponse[]>) => {
-      state.loading = false;
-      state.products = action.payload;
-    })
+    .addCase(getAllProducts.fulfilled, (state, action: PayloadAction<Record<string, ProductResponse[]>>) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
     .addCase(getAllProducts.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     })
     
-    // Creaet
+    // Create
     .addCase(createProduct.pending, (state) => {
       state.saving = true;
       state.error = undefined;
     })
-    .addCase(createProduct.fulfilled, (state, action) => {
+    .addCase(createProduct.fulfilled, (state) => {
       state.saving = false;
-      state.products.push(action.payload);
     })
     .addCase(createProduct.rejected, (state, action) => {
       state.saving = false;
