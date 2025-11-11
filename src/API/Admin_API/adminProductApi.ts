@@ -15,7 +15,10 @@ export type ProductResponse = ProductPayload & {
 };
 
 export const adminProductApi = {
-  getAll: () => axiosClient.get<ProductResponse[]>("/products"),
+  getAll: () =>
+    axiosClient.get<Record<string, ProductResponse[]>>("/Product", {
+      params: { groupByCategory: true },
+    }),
 
   getById: (id: number) => axiosClient.get<ProductResponse>(`/products/${id}`),
 
