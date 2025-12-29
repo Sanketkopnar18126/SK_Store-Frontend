@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { NavbarLinks } from "./NavbarLinks";
 import { MobileMenu } from "./MobileMenu";
-import { SearchBar } from "./SearchBar";
+// import { SearchBar } from "./SearchBar";
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,12 +18,12 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center gap-4 min-w-0">
             <NavbarLinks />
             <div className="min-w-0"> 
-              <SearchBar />
+              {/* <SearchBar /> */}
             </div>
           </div>
           <div className="flex items-center md:hidden gap-3 min-w-0">
             <div className="min-w-0 w-10"> 
-              <SearchBar />
+              {/* <SearchBar /> */}
             </div>
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Open menu" className="flex-shrink-0">
               {mobileMenuOpen ? <HiOutlineX size={28} /> : <HiOutlineMenu size={28} />}

@@ -8,6 +8,15 @@ imageUrls?: string[];
 };
 
 
+export type ProductPayload = {
+  name: string;
+  price: number;
+  stock: number;
+  description: string;
+  category: string;
+  imageUrls?: string[];
+};
+
 export type UploadResponse = {
 urls: string[]; 
 };
@@ -41,3 +50,33 @@ export type CartResponse = {
   items: CartItemResponse[];
   total: number;
 };
+
+
+
+///============== User -==============
+
+export interface UserResponseDto {
+  id: number;
+  fullName: string;
+  email: string;
+  phone?: string;
+}
+
+export interface AuthResponseDto {
+  accessToken: string;
+  refreshToken: string;
+  user: UserResponseDto;
+  expiresAt: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  fullName: string;
+  email: string;
+  password: string;
+  phone?: string;
+}

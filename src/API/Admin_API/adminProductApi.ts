@@ -1,13 +1,6 @@
+import type { ProductPayload } from "../../Components/AdminLayout/ProductForm/types";
 import axiosClient from "./axiosClient";
 
-export type ProductPayload = {
-  name: string;
-  price: number;
-  stock: number;
-  description: string;
-  category: string;
-  imageUrls?: string[];
-};
 
 export type ProductResponse = ProductPayload & {
   id: number;

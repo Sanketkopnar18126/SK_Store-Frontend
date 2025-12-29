@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { adminProductApi, type ProductResponse } from "../../API/Admin_API/adminProductApi";
 import type { ProductFormValues } from "../../Components/AdminLayout/ProductForm/types";
+import { productApi } from "../../API/Product_API/productApi";
 
 interface ProductState {
   uploading: boolean;
@@ -8,6 +9,8 @@ interface ProductState {
   loading: boolean; 
   uploadedUrls: string[];
   products: Record<string, ProductResponse[]>;
+  selectedProduct?: ProductResponse;
+  recommended: ProductResponse[];
   error?: string;
 }
 
@@ -17,6 +20,8 @@ const initialState: ProductState = {
   loading:false,
   uploadedUrls: [],
   products: {},
+  selectedProduct: undefined,
+  recommended:[]
 };
 
 // --- Thunks ---
@@ -66,6 +71,45 @@ export const uploadImages = createAsyncThunk(
   }
 );
 
+// get product by id
+
+export const getProductById = createAsyncThunk<
+  ProductResponse,
+  string | number
+>(
+  "products/getById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await productApi.getById(Number(id));
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err?.response?.data?.message ?? "Failed to fetch product"
+      );
+    }
+  }
+);
+
+// recomended
+
+export const getRecommendedProducts = createAsyncThunk<
+  ProductResponse[],
+  number | undefined
+>(
+  "products/getRecommended",
+  async (limit = 8, { rejectWithValue }) => {
+    try {
+      const res = await productApi.getRecommended();
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(
+        err?.response?.data?.message ?? "Failed to fetch recommended products"
+      );
+    }
+  }
+);
+
+
 export const productSlice = createSlice({
   name: "products",
   initialState,
@@ -90,6 +134,21 @@ export const productSlice = createSlice({
         state.products = action.payload;
       })
     .addCase(getAllProducts.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
+
+    // get product by id
+
+    .addCase(getProductById.pending, (state) => {
+      state.loading = true;
+      state.error = undefined;
+    })
+    .addCase(getProductById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.selectedProduct = action.payload;
+    })
+    .addCase(getProductById.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     })
@@ -118,7 +177,21 @@ export const productSlice = createSlice({
       .addCase(uploadImages.rejected, (state, action) => {
         state.uploading = false;
         state.error = action.payload as string;
-      });
+      })
+
+      // get recommended products
+      .addCase(getRecommendedProducts.pending, (state) => {
+        state.loading = true;
+        state.error = undefined;
+      })
+      .addCase(getRecommendedProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.recommended = action.payload;
+      })
+      .addCase(getRecommendedProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
 },
 });
 
