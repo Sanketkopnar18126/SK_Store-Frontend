@@ -13,7 +13,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center gap-4">
           <Link to="/" className="text-2xl font-extrabold tracking-tight text-indigo-600 flex-shrink-0">
-            Sangita's Shop
+            Sai Jweller's Shop
           </Link>
           <div className="hidden md:flex items-center gap-4 min-w-0">
             <NavbarLinks />

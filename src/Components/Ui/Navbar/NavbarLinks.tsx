@@ -19,7 +19,6 @@ export const NavbarLinks: React.FC<Props> = ({ cartCount = 0 }) => {
     (state: RootState) => state.auth
   );
 
-  console.log("Is", isAuthenticated, user);
   const links = [
     { name: "Home", path: "/" },
     { name: "Collections", path: "/collections" },

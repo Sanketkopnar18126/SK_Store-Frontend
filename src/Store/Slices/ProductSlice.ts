@@ -61,7 +61,6 @@ export const uploadImages = createAsyncThunk(
   async (files: File[], { rejectWithValue }) => {
     try {
       const res = await adminProductApi.uploadImages(files); 
-      debugger
       const data: any = res.data;
       const urls: string[] = data?.urls ?? data?.imageUrls ?? [];
       return Array.isArray(urls) ? urls : [];

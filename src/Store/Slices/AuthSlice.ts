@@ -121,7 +121,6 @@ const authSlice = createSlice({
         state.user = JSON.parse(user);
         state.isAuthenticated = true;
       }
-      console.log("Ac", accessToken);
     },
   },
   extraReducers: (builder) => {
