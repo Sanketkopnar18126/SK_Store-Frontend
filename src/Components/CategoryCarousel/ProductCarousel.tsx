@@ -3,34 +3,44 @@ import useEmblaCarousel from "embla-carousel-react";
 import ProductCard from "./ProductCard";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import type { ProductResponse } from "../../API/Admin_API/adminProductApi";
+import ProductCardSkeleton from "../Ui/Loader/ProductCardSkeleton";
 
 type Props = {
   products: ProductResponse[];
+  loading?:boolean
 };
 
-export const ProductCarousel: React.FC<Props> = ({ products }) => {
+export const ProductCarousel: React.FC<Props> = ({ products ,loading}) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     dragFree: false,
     containScroll: "trimSnaps",
   });
-
   const scrollPrev = () => emblaApi?.scrollPrev();
   const scrollNext = () => emblaApi?.scrollNext();
+  
   useEffect(() => {
     if (!emblaApi) return;
     emblaApi.reInit();
   }, [emblaApi, products.length]);
+
   return (
+
     <div className="relative">
       {/* Carousel Container */}
       <div ref={emblaRef} className="overflow-hidden">
-        <div className="flex gap-4 px-2">
-          {products.map((product) => (
-            <div key={product.id} className="flex-none w-72">
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+          <div className="flex gap-4 px-2">
+            {loading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className="flex-none w-72">
+                    <ProductCardSkeleton />
+                  </div>
+                ))
+              : products.map((product) => (
+                  <div key={product.id} className="flex-none w-72">
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+          </div>
       </div>
 
       {/* Left Arrow */}

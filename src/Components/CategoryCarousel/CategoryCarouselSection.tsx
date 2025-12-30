@@ -9,7 +9,6 @@ type Props = {
 };
 export const CategoryCarouselSection: React.FC<Props> = ({productsMap,loading}) => {
    const categories = Object.keys(productsMap || {});
-
   return (
     <div className="space-y-10">
        {categories.map((category) => {
@@ -27,7 +26,7 @@ export const CategoryCarouselSection: React.FC<Props> = ({productsMap,loading}) 
               </Typography>
             </div>
 
-            <ProductCarousel products={categoryProducts} />
+            <ProductCarousel products={categoryProducts} loading={loading} />
           </div>
         );
       })}

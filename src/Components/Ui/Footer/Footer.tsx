@@ -9,7 +9,7 @@ export const Footer = () => {
           
           {/* Brand Section */}
           <div>
-            <h2 className="text-2xl font-bold text-white mb-3">Aurora Shop</h2>
+            <h2 className="text-2xl font-bold text-white mb-3">Sai Jweller's Shop</h2>
             <p className="text-sm text-gray-400 leading-relaxed">
               Your one-stop shop for fashion, lifestyle, and essentials.
               Discover your style with us.
@@ -20,10 +20,10 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/shop" className="hover:text-indigo-400 transition">Shop</Link></li>
-              <li><Link to="/collections" className="hover:text-indigo-400 transition">Collections</Link></li>
-              <li><Link to="/about" className="hover:text-indigo-400 transition">About Us</Link></li>
-              <li><Link to="/contact" className="hover:text-indigo-400 transition">Contact</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition">Shop</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition">Collections</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition">About Us</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition">Contact</Link></li>
             </ul>
           </div>
 
@@ -31,10 +31,10 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold text-white mb-3">Customer Service</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/faq" className="hover:text-indigo-400 transition">FAQs</Link></li>
-              <li><Link to="/returns" className="hover:text-indigo-400 transition">Returns</Link></li>
-              <li><Link to="/shipping" className="hover:text-indigo-400 transition">Shipping Info</Link></li>
-              <li><Link to="/privacy" className="hover:text-indigo-400 transition">Privacy Policy</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition">FAQs</Link></li>
+              <li><Link to="/" className="hover:text-indigo-400 transition">Returns</Link></li>
+              {/* <li><Link to="/shipping" className="hover:text-indigo-400 transition">Shipping Info</Link></li> */}
+              <li><Link to="/" className="hover:text-indigo-400 transition">Privacy Policy</Link></li>
             </ul>
           </div>
 
@@ -53,7 +53,7 @@ export const Footer = () => {
 
         {/* Bottom Footer */}
         <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500 mt-6">
-          <p>© {new Date().getFullYear()} Aurora Shop. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Sai Jweller's. All rights reserved.</p>
           <p className="mt-2 sm:mt-0">Made with ❤️ by <span className="text-indigo-400">Your Team</span></p>
         </div>
       </div>

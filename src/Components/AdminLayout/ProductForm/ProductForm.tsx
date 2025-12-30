@@ -16,7 +16,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../Store";
 import { useForm, Controller } from "react-hook-form";
-import { createProduct } from "../../../Store/Slices/ProductSlice";
+import { clearUploadedUrls, createProduct } from "../../../Store/Slices/ProductSlice";
+import { toast } from "sonner";
 
 type Props = {
   defaultValues?: ProductFormValues;
@@ -34,6 +35,7 @@ const ProductForm: React.FC<Props> = ({ defaultValues, submitLabel }) => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<ProductFormValues>({
     defaultValues: defaultValues || {
@@ -46,8 +48,30 @@ const ProductForm: React.FC<Props> = ({ defaultValues, submitLabel }) => {
     },
   });
 
-  const onSubmit = (data: ProductFormValues) => {
-    dispatch(createProduct({ ...data, imageUrls: uploadedUrls }));
+  const onSubmit = async(data: ProductFormValues) => {
+      try {
+    const result = await dispatch(
+      createProduct({ ...data, imageUrls: uploadedUrls })
+    );
+
+    if (createProduct.fulfilled.match(result)) {
+      toast.success("Product added successfully 🎉");
+      reset({
+        name: "",
+        price: 0,
+        stock: 0,
+        description: "",
+        category: "",
+        imageUrls: [],
+      });
+
+      dispatch(clearUploadedUrls());
+    } else {
+      toast.error("Failed to add product");
+    }
+  } catch (error) {
+    toast.error("Something went wrong");
+  }
   };
 
   return (
@@ -99,7 +123,8 @@ const ProductForm: React.FC<Props> = ({ defaultValues, submitLabel }) => {
             control={control}
             rules={{
               required: "Price required",
-              min: { value: 0, message: "Price must be >= 0" },
+              validate: (value) =>
+                Number(value) >= 0 || "Price must be >= 0",
             }}
             render={({ field }) => (
               <TextField
@@ -107,14 +132,16 @@ const ProductForm: React.FC<Props> = ({ defaultValues, submitLabel }) => {
                 label="Price"
                 type="number"
                 fullWidth
-                inputProps={{ step: 0.01 }}
+                inputProps={{
+                  min: 0,        
+                  step: 0.01,
+                }}
                 error={!!errors.price}
                 helperText={errors.price?.message}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value ?? ""}
               />
             )}
           />
+
         </ItemGrid>
 
         <ItemGrid item xs={12} sm={6}>
@@ -123,7 +150,8 @@ const ProductForm: React.FC<Props> = ({ defaultValues, submitLabel }) => {
             control={control}
             rules={{
               required: "Stock required",
-              min: { value: 0, message: "Stock must be >= 0" },
+              validate: (value) =>
+                Number(value) >= 0 || "Stock must be >= 0",
             }}
             render={({ field }) => (
               <TextField
@@ -131,10 +159,12 @@ const ProductForm: React.FC<Props> = ({ defaultValues, submitLabel }) => {
                 label="Stock"
                 type="number"
                 fullWidth
+                inputProps={{
+                  min: 0,   
+                  step: 1,
+                }}
                 error={!!errors.stock}
                 helperText={errors.stock?.message}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-                value={field.value ?? ""}
               />
             )}
           />
