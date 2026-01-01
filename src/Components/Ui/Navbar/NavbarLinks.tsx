@@ -21,8 +21,8 @@ export const NavbarLinks: React.FC<Props> = ({ cartCount = 0 }) => {
 
   const links = [
     { name: "Home", path: "/" },
-    { name: "Collections", path: "/collections" },
-    { name: "Account", path: "/account" },
+    { name: "Collections", path: "/" },
+    { name: "Account", path: "/" },
     { name: "Admin", path: "/admin/products" },
   ];
   useEffect(() => {

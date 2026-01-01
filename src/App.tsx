@@ -8,6 +8,7 @@ import { AdminProductsTable } from "./Pages/Admin/AdminProductsTable";
 import CartPage from "./Pages/Cart/Cart";
 import { Register } from "./Components/Auth/Register/Register";
 import ProductDetails from "./Pages/Product/ProductDetails";
+import CategoryPage from "./Pages/Category/CategoryPage";
 
 export const App=()=> {
   return (
@@ -21,6 +22,7 @@ export const App=()=> {
         <Route path="/admin/add-product" element={<AddProduct />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/category/:slug" element={<CategoryPage />} />
 
       </Route>
     </Routes>
