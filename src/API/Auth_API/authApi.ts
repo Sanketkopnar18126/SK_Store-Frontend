@@ -1,20 +1,37 @@
+import axios from "axios";
 import type {
-  AuthResponseDto,
   LoginPayload,
   RegisterPayload,
 } from "../../Components/AdminLayout/ProductForm/types";
-import axiosClient from "../Admin_API/axiosClient";
+
+const BASE_URL = "https://localhost:7126/api";
 
 export const authApi = {
-  login: (payload: LoginPayload) =>
-    axiosClient.post<AuthResponseDto>("/Auth/login", payload),
+  login: (data: LoginPayload) =>
+    axios.post(`${BASE_URL}/Auth/login`, data, {
+      withCredentials: true,
+    }),
 
-  register: (payload: RegisterPayload) =>
-    axiosClient.post<AuthResponseDto>("/Auth/register", payload),
+  register: (data: RegisterPayload) =>
+    axios.post(`${BASE_URL}/Auth/register`, data, {
+      withCredentials: true,
+    }),
 
-  refresh: (refreshToken: string) =>
-    axiosClient.post<AuthResponseDto>("/Auth/refresh", refreshToken),
+  refresh: () =>
+    axios.post(
+      `${BASE_URL}/Auth/refresh`,
+      {},
+      {
+        withCredentials: true,
+      }
+    ),
 
-  logout: (refreshToken: string) =>
-    axiosClient.post<void>("/Auth/logout", refreshToken),
+  logout: () =>
+    axios.post(
+      `${BASE_URL}/Auth/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    ),
 };

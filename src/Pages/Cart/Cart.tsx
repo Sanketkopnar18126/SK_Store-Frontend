@@ -14,6 +14,10 @@ import {
   selectCartSubtotal,
   selectCartTotalQty,
 } from "../../Store/Selectors/cartSelectors";
+import { openRazorpay } from "../../Utils/razorpay";
+import { checkoutOrder } from "../../Store/Slices/OrderSlice";
+import { verifyPayment } from "../../Store/Slices/PaymentSlice";
+
 
 const currency = (v: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -27,17 +31,45 @@ const DELIVERY_CHARGE = 49;
 
 const CartPageModern: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const [paymentProcessing, setPaymentProcessing] = React.useState(false);
   const cartItems = useSelector(selectCartItemsArray);
   const subtotal = useSelector(selectCartSubtotal);
   const totalQty = useSelector(selectCartTotalQty);
   const { loading, fetched } = useSelector((s: RootState) => s.cart);
-
   useEffect(() => {
     if (!fetched && !loading) {
       dispatch(fetchCart());
     }
   }, [dispatch, fetched, loading]);
+
+  const handleCheckout = async () => {
+    const payload = {
+      items: cartItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.unitPrice,
+      })),
+    };
+    const result = await dispatch(checkoutOrder(payload)).unwrap();
+    openRazorpay(
+      result.payment,
+      () => setPaymentProcessing(true),
+      async (response) => {
+        try {
+          await dispatch(
+            verifyPayment({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            })
+          ).unwrap();
+        } finally {
+          setPaymentProcessing(false);
+        }
+      },
+      () => setPaymentProcessing(false)
+    );
+  };
 
   // DELIVERY LOGIC
   const isFreeDelivery = subtotal >= FREE_DELIVERY_MIN;
@@ -207,8 +239,19 @@ const CartPageModern: React.FC = () => {
                 </span>
               </div>
 
-              <button className="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 rounded-xl font-semibold shadow-lg">
-                Proceed to Checkout
+              <button
+                onClick={handleCheckout}
+                disabled={paymentProcessing}
+                className={`w-full py-3 rounded-xl font-semibold shadow-lg
+                    ${
+                      paymentProcessing
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white"
+                    }`}
+              >
+                {paymentProcessing
+                  ? "Processing payment..."
+                  : "Proceed to Checkout"}
               </button>
 
               <p className="text-xs text-center text-gray-400 mt-3">

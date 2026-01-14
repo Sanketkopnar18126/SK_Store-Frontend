@@ -10,11 +10,17 @@ import {
 } from "@mui/material";
 import { loginSchema, type LoginFormData } from "../../../Validation/loginSchema";
 import { EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import { loginUser } from "../../../Store/Slices/AuthSlice";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../../Store";
 
 
 export const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -23,8 +29,14 @@ export const LoginPage: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("LOGIN DATA 👉", data);
+  const onSubmit = async(data: LoginFormData) => {
+    const result = await dispatch(loginUser(data));
+    if (loginUser.fulfilled.match(result)) {
+      toast.success("Login Successfully");
+      navigate("/");
+    } else {
+      toast.error(result.payload as string);
+    }
   };
 
   return (
