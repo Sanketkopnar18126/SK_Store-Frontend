@@ -24,9 +24,9 @@ const Home: React.FC = () => {
       </div>
 
 
-<div className="w-full max-w-screen-xl mx-auto px-4">
-  <BannerCarousel />
-</div>
+      <div className="w-full max-w-screen-xl mx-auto px-4">
+        <BannerCarousel />
+      </div>
 
       {/* Category Carousel Section */}
       <section className="py-10">

@@ -80,3 +80,34 @@ export interface RegisterPayload {
   password: string;
   phone?: string;
 }
+
+/// Check Out
+
+export interface CheckoutItemDto {
+  productId: number;
+  quantity: number;
+  price: number;
+}
+
+export interface CheckoutOrderDto {
+  items: CheckoutItemDto[];
+}
+
+export interface CheckoutResponseDto {
+  order: {
+    orderId: string; 
+    totalAmount: number;
+    staus:string
+  };
+  payment: {
+    key: string;
+    amount: number;
+    razorpayOrderId: string;
+  };
+}
+
+export interface VerifyPaymentDto {
+  orderId: string;       // razorpay_order_id
+  paymentId: string;     // razorpay_payment_id
+  signature: string;     // razorpay_signature
+}
